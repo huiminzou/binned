@@ -1,15 +1,23 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jul 05 15:01:58 2018
+Program to plot the bin-averaged velocities & standard deviations using the "arrow" command.
+It imports the "binned.npz" file created by previous program.
+@author: huimin in July 2018
+contributions from JiM mostly in the form of comments and documentation
 
-@author: huimin
+NOTE: this assumes you have run a series of programs:
+-ERDDAP download of drifters data
+-segment.py to make individual drifter files
+-s0_1hr.py to get hourly data and remove tide
+-s1_mean.py to bin
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 import netCDF4
 ###################HARDCODE########################
-
+# do you actually use this function?
 def sh_bindata(x, y, z, xbins, ybins):
     """
     Bin irregularly spaced data on a rectangular grid.
@@ -55,6 +63,8 @@ vb_median=Z['vb_median']
 vb_std=Z['vb_std']
 vb_num=Z['vb_num']
 Z.close()
+# what is the purpose of this for-loop that follows?
+# If there are less than "10" observations, you set to "nan" because you don't think that is enough to define a good velocity?
 for a in np.arange(len(ub_num)):
     for b in np.arange(len(ub_num[0])):
         if ub_num[a][b]<10:
@@ -71,7 +81,7 @@ for a in np.arange(len(ub_mean)):
 dv=aa
 
 xxb,yyb = np.meshgrid(xb, yb)
-cc=np.arange(-1.5,1.500001,0.05)
+cc=np.arange(-1.5,1.500001,0.05) # what is "cc"
 
 plt.figure()
 ub = np.ma.array(ub_mean, mask=np.isnan(ub_mean))
@@ -85,8 +95,8 @@ for a in np.arange(len(ub_mean)):
 
 for a in np.arange(len(xxb)):
     for b in np.arange(len(xxb[0])):
-        plt.arrow(xxb[a][b],yyb[a][b],ub_mean.T[a][b]/8,vb_mean.T[a][b]/8,head_width=.01)
-plt.arrow(-70.1,41.7,0.05,0,head_width=.01)
+        plt.arrow(xxb[a][b],yyb[a][b],ub_mean.T[a][b]/8,vb_mean.T[a][b]/8,head_width=.01)# why divide by "8"?
+plt.arrow(-70.1,41.7,0.05,0,head_width=.01)# again, you do not want these numbers in the middle of the code.
 plt.text(-70.1,41.72,'$5cm/s$')        
 
 plt.title(FN[:-4]+', mean')
@@ -109,7 +119,7 @@ for a in np.arange(len(ub_std)):
 for a in np.arange(len(xxb)):
     for b in np.arange(len(xxb[0])):
         plt.arrow(xxb[a][b],yyb[a][b],ub_std.T[a][b]/10,vb_std.T[a][b]/10,head_width=.01)
-plt.arrow(-70.1,41.7,0.05,0,head_width=.01)
+plt.arrow(-70.1,41.7,0.05,0,head_width=.01)# if you divide the data by 10, you need to divide the legend by 10
 plt.text(-70.1,41.72,'$5cm/s$')         
 
 plt.title(FN[:-4]+', std')
