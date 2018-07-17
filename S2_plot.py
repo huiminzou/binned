@@ -11,6 +11,9 @@ NOTE: this assumes you have run a series of programs:
 -segment.py to make individual drifter files
 -s0_1hr.py to get hourly data and remove tide
 -s1_mean.py to bin
+
+Also assumes you have access to the coastline and bathy files as:
+necscoast_worldvec.dat and sea.csv
 """
 
 import numpy as np
@@ -139,12 +142,12 @@ for a in np.arange(len(xxb[0])):
             plt.text(xxb[0][a],yyb[b][0],ub_num[a][b])
 plt.plot(CL['lon'],CL['lat'])
 plt.axis([-70.75,-70,41.63,42.12])
-plt.title('binned_drifter_num')
+plt.title('# observations/bin')
 plt.savefig('binned_drifter_num')
 plt.show()
   
 plt.figure()
-plt.title('sea_depth')
+plt.title('Depth (m)')
    
 data = np.genfromtxt('sea.csv',dtype=None,names=['x','y','h'],delimiter=',')    
 x=[]
