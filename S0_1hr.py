@@ -1,8 +1,18 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue May 29 11:12:11 2018
-first, run segment.py to get individual files by drifter id
-@author: huimin
+This program:
+-uses a cubic spline to get hourly drifter time series of lat & lon and then apparently
+-uses a two hour bin to calculate u & v velocity on the hour
+-uses a function "sh_rmtide" in the SeaHorseTide module to remove tide
+-outputs an npz file with multiple variables including u & v with and without tide to the "data1" directory 
+
+@author: Huimin (using some code from Vitalii) in July 2018
+contributions from JiM soon after mostly in the form of documentation
+
+Note: Before running this program, you may need to:
+-download a csv from ERDDAP server and then
+-run segment.py to get individual files by drifter id
 """
 
 
@@ -53,7 +63,7 @@ for a in np.arange(len(FList['FNs'])):
         latz=[]
         timez=[]
         tz=[]
-        for i in range(1,len(dr['time'])-1):
+        for i in range(1,len(dr['time'])-1):# this loop appears to calculate a velocity using two hour bin?
             udh.append((dr['lon'][i+1]-dr['lon'][i-1])/((tdh[i+1]-tdh[i-1])/24.0)*Coef*np.cos(dr['lat'][i]*np.pi/180.))
             vdh.append((dr['lat'][i+1]-dr['lat'][i-1])/((tdh[i+1]-tdh[i-1])/24.0)*Coef)
 
