@@ -103,8 +103,8 @@ th=th[i]
 x=lonh
 y=lath
 # this geographic box needs to be defined at the top of the code.  
-xi = np.arange(gbox[1],gbox[2],gridsize) # creates a string of longitudes
-yi = np.arange(gbox[3],gbox[4],gridsize) # creates a string of latitudes
+xi = np.arange(gbox[0],gbox[1],gridsize) # creates a string of longitudes
+yi = np.arange(gbox[2],gbox[3],gridsize) # creates a string of latitudes
 
 xb,yb,ub_mean,ub_median,ub_std,ub_num = sh_bindata(x, y, u, xi, yi)
 xb,yb,vb_mean,vb_median,vb_std,vb_num = sh_bindata(x, y, v, xi, yi)
